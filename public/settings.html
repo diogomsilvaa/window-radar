@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Radar Settings</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <span class="beacon"></span>
+      <h1>RADAR SETTINGS</h1>
+      <a class="nav-link" href="index.html">&larr; RADAR</a>
+    </header>
+    <main class="settings">
+      <p class="hint">
+        Click the map to drop the corners of your window's field of view (3+
+        points). Drag markers to adjust. Center and search radius are derived
+        automatically.
+      </p>
+      <div id="map" class="map"></div>
+      <div class="settings-bar">
+        <div id="summary" class="summary">No area set.</div>
+        <div class="settings-actions">
+          <button id="undo" type="button">UNDO</button>
+          <button id="clear" type="button">CLEAR</button>
+          <button id="save" type="button" class="primary">SAVE</button>
+        </div>
+      </div>
+      <p id="saved" class="saved"></p>
+    </main>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="settings.js"></script>
+  </body>
+</html>

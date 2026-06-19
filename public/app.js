@@ -2,14 +2,36 @@ const REFRESH_MS = 5000;
 const elStage = document.getElementById('stage');
 const elStatus = document.getElementById('status');
 
-const POLY = [
+const DEFAULT_POLY = [
   [38.7680545101772, -9.150207811334049],
   [38.74701197030756, -9.159055646121123],
   [38.74548995600661, -9.145315584687449],
   [38.76499413138829, -9.141094000594784],
 ];
-const CENTER = { lat: 38.7563, lon: -9.1500 };
-const RADIUS_NM = 3;
+const DEFAULT_CENTER = { lat: 38.7563, lon: -9.1500 };
+const DEFAULT_RADIUS_NM = 3;
+
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem('radarConfig');
+    if (raw) {
+      const c = JSON.parse(raw);
+      if (Array.isArray(c.poly) && c.poly.length >= 3 && c.center) {
+        return {
+          poly: c.poly,
+          center: c.center,
+          radiusNm: c.radiusNm || DEFAULT_RADIUS_NM,
+        };
+      }
+    }
+  } catch {}
+  return { poly: DEFAULT_POLY, center: DEFAULT_CENTER, radiusNm: DEFAULT_RADIUS_NM };
+}
+
+const CFG = loadConfig();
+const POLY = CFG.poly;
+const CENTER = CFG.center;
+const RADIUS_NM = CFG.radiusNm;
 const ALT_CEILING_M = 3000;
 const FT_PER_M = 3.28084;
 
