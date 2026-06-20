@@ -78,6 +78,17 @@ body {
   border-radius: 6px;
 }
 
+.locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  color: #1f8f55;
+}
+.locate-btn:hover { background: #f4f4f4; color: #28ff8f; }
+
 .settings-bar {
   display: flex;
   align-items: center;

@@ -36,6 +36,36 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap',
 }).addTo(map);
 
+// Recenter the map on the device's current position (used by the control button
+// and on initial load).
+function goToMyLocation() {
+  map.locate({ setView: true, maxZoom: 14, enableHighAccuracy: true });
+}
+
+// "My location" control. Clicks are stopped from propagating so the button never
+// drops a polygon point.
+const LocateControl = L.Control.extend({
+  options: { position: 'bottomright' },
+  onAdd() {
+    const el = L.DomUtil.create('a', 'leaflet-bar leaflet-control locate-btn');
+    el.href = '#';
+    el.title = 'Go to my location';
+    el.setAttribute('role', 'button');
+    el.innerHTML =
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">' +
+      '<path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3A9.01 9.01 0 0013 3.06V1h-2v2.06A9.01 9.01 0 003.06 11H1v2h2.06A9.01 9.01 0 0011 20.94V23h2v-2.06A9.01 9.01 0 0020.94 13H23v-2h-2.06zM12 19a7 7 0 110-14 7 7 0 010 14z"/>' +
+      '</svg>';
+    L.DomEvent.on(el, 'click', L.DomEvent.stop).on(el, 'click', goToMyLocation);
+    return el;
+  },
+});
+map.zoomControl.setPosition('bottomright');
+map.addControl(new LocateControl());
+
+map.on('locationerror', () => {
+  elSaved.textContent = 'Could not get your location.';
+});
+
 // Geometry helpers: arithmetic centroid and great-circle distance in meters.
 function centroid(pts) {
   const lat = pts.reduce((s, p) => s + p[0], 0) / pts.length;
@@ -186,4 +216,5 @@ document.getElementById('save').onclick = () => {
 };
 
 reset(start);
-map.fitBounds(L.polygon(start).getBounds(), { padding: [40, 40] });
+map.fitBounds(L.polygon(start).getBounds(), { padding: [40, 40], maxZoom: 14 });
+goToMyLocation();
