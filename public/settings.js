@@ -43,6 +43,7 @@ function centroid(pts) {
   return { lat, lon };
 }
 
+// Great-circle distance in metres between two lat/lon points (haversine formula).
 function haversineM(aLat, aLon, bLat, bLon) {
   const R = 6371000;
   const dLat = ((bLat - aLat) * Math.PI) / 180;
@@ -62,7 +63,9 @@ function deriveConfig() {
   for (const p of points) {
     maxM = Math.max(maxM, haversineM(center.lat, center.lon, p[0], p[1]));
   }
-  const radiusNm = Math.max(1, Math.ceil((maxM / 1852) * 10) / 10 + 0.1);
+  // Convert metres to nautical miles (1 NM = 1852 m), add a 0.1 NM buffer so
+  // corners aren't exactly on the edge, and never go below a 1 NM minimum.
+  const radiusNm = Math.max(1, maxM / 1852 + 0.1);
   return { center, radiusNm };
 }
 
@@ -70,6 +73,7 @@ function deriveConfig() {
 function orderedPoints() {
   if (points.length < 3) return points.slice();
   const pts = points.slice().sort((a, b) => a[1] - b[1] || a[0] - b[0]);
+  // 2D cross product of OA x OB; <= 0 means a non-left turn, so the middle point is dropped.
   const cross = (o, a, b) => (a[1] - o[1]) * (b[0] - o[0]) - (a[0] - o[0]) * (b[1] - o[1]);
   const lower = [];
   for (const p of pts) {
@@ -82,6 +86,7 @@ function orderedPoints() {
     while (upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
     upper.push(p);
   }
+  // Drop each chain's last point (it's the other chain's first point) to avoid duplicates.
   return lower.slice(0, -1).concat(upper.slice(0, -1));
 }
 
@@ -98,7 +103,7 @@ function redraw() {
   if (points.length >= 3) {
     const { center, radiusNm } = deriveConfig();
     radiusCircle = L.circle([center.lat, center.lon], {
-      radius: radiusNm * 1852,
+      radius: radiusNm * 1852, // nautical miles -> metres (1 NM = 1852 m) for the Leaflet circle.
       color: '#1f8f55',
       weight: 1,
       dashArray: '4 6',
