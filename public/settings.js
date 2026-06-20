@@ -16,6 +16,7 @@ const markers = [];
 let polygon = null;
 let centerMarker = null;
 let radiusCircle = null;
+let locationMarker = null;
 
 // Load the saved polygon from localStorage, or fall back to the defaults.
 function loadSaved() {
@@ -36,8 +37,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap',
 }).addTo(map);
 
-// Recenter the map on the device's current position (used by the control button
-// and on initial load).
+// Recenter the map on the device's current position (triggered by the control button).
 function goToMyLocation() {
   map.locate({ setView: true, maxZoom: 14, enableHighAccuracy: true });
 }
@@ -61,6 +61,19 @@ const LocateControl = L.Control.extend({
 });
 map.zoomControl.setPosition('bottomright');
 map.addControl(new LocateControl());
+
+// Drop a distinct blue marker at the located position (replacing any previous one),
+// so it's clearly separate from the green polygon corner markers.
+map.on('locationfound', (e) => {
+  if (locationMarker) map.removeLayer(locationMarker);
+  locationMarker = L.circleMarker(e.latlng, {
+    radius: 6,
+    color: '#fff',
+    weight: 2,
+    fillColor: '#1e90ff',
+    fillOpacity: 1,
+  }).addTo(map);
+});
 
 map.on('locationerror', () => {
   elSaved.textContent = 'Could not get your location.';
@@ -204,6 +217,13 @@ document.getElementById('undo').onclick = () => {
 
 document.getElementById('clear').onclick = () => reset([]);
 
+// Restore the built-in default polygon and refit the view to it.
+document.getElementById('reset').onclick = () => {
+  reset(DEFAULT_POLY);
+  map.fitBounds(L.polygon(DEFAULT_POLY).getBounds(), { padding: [40, 40], maxZoom: 14 });
+  elSaved.textContent = 'Reset to default area. Press Save to keep it.';
+};
+
 document.getElementById('save').onclick = () => {
   if (points.length < 3) {
     elSaved.textContent = 'Need at least 3 corners to save.';
@@ -217,4 +237,3 @@ document.getElementById('save').onclick = () => {
 
 reset(start);
 map.fitBounds(L.polygon(start).getBounds(), { padding: [40, 40], maxZoom: 14 });
-goToMyLocation();
