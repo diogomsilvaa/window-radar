@@ -15,11 +15,16 @@ Open `public/index.html` directly in a browser. No server, no install.
 
 ## Configuration
 
-All tunables live at the top of `public/app.js`. The defaults point at a window
-in Lisbon — change them to match your own location:
+The viewing area can be set visually on the **Settings** page (link in the top
+bar, or open `public/settings.html`): click the map to drop the corners of the
+window's field of view, drag to adjust, and save. The center and search radius
+are derived automatically and stored in `localStorage` under `radarConfig`.
 
-- `POLY` — the four corners of your viewing quadrilateral
-- `CENTER`, `RADIUS_NM` — the area queried from airplanes.live
+Other tunables live at the top of `public/app.js`. The defaults point at a
+window in Lisbon — change them to match your own location:
+
+- `DEFAULT_POLY` — fallback corners of the viewing quadrilateral
+- `DEFAULT_CENTER`, `DEFAULT_RADIUS_NM` — fallback area queried from airplanes.live
 - `ALT_CEILING_M` — altitude cap in meters
 - `REFRESH_MS` — poll interval (default 5000 ms)
 
@@ -39,6 +44,8 @@ airlines.json         # source list of airline ICAO prefixes
 public/
   index.html          # entry point
   app.js              # fetch + filter + render
+  settings.html       # map-based area picker
+  settings.js         # Leaflet picker, writes radarConfig to localStorage
   airlines.js         # airlines.json bundled as window.AIRLINES
   styles.css
 ```

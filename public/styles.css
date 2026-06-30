@@ -44,6 +44,84 @@ body {
 .status { font-size: 12px; color: var(--green-dim); letter-spacing: 1px; }
 .status.err { color: #ff5d5d; }
 
+.nav-link {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--green-dim);
+  text-decoration: none;
+  border: 1px solid var(--green-dim);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.nav-link:hover { color: var(--green); border-color: var(--green); }
+
+.settings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 3vh 5vw;
+}
+
+.settings .hint {
+  margin: 0;
+  color: var(--green-dim);
+  font-size: 13px;
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+
+.map {
+  flex: 1;
+  min-height: 420px;
+  border: 1px solid var(--green-dim);
+  border-radius: 6px;
+}
+
+.locate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  color: #1f8f55;
+}
+.locate-btn:hover { background: #f4f4f4; color: #28ff8f; }
+
+.settings-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.summary { color: var(--green); font-size: 13px; letter-spacing: 1px; }
+
+.settings-actions { display: flex; gap: 10px; }
+
+.settings-actions button {
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--green-dim);
+  background: transparent;
+  border: 1px solid var(--green-dim);
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.settings-actions button:hover { color: var(--green); border-color: var(--green); }
+.settings-actions .primary {
+  color: var(--bg);
+  background: var(--green);
+  border-color: var(--green);
+  font-weight: 700;
+}
+
+.saved { margin: 0; color: var(--green); font-size: 13px; letter-spacing: 1px; min-height: 18px; }
+
 .stage {
   flex: 1;
   display: flex;
