@@ -40,6 +40,9 @@ const ADSBDB = 'https://api.adsbdb.com/v0/callsign';
 const ROUTE_TTL = 60 * 60 * 1000;
 const routeCache = new Map();
 
+let currentVersion = null;
+let lastVersionCheck = 0;
+
 function inPoly(lat, lon, poly) {
   let inside = false;
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
@@ -223,6 +226,23 @@ function render(planes) {
   elStage.innerHTML = planeView(planes[0], extra);
 }
 
+async function checkVersion() {
+  if (Date.now() - lastVersionCheck < 60000) return;
+  lastVersionCheck = Date.now();
+  try {
+    const res = await fetch('app.json?t=' + Date.now());
+    const data = await res.json();
+    if (data.version) {
+      if (currentVersion === null) {
+        currentVersion = data.version;
+      } else if (data.version !== currentVersion) {
+        location.reload();
+      }
+    }
+  } catch {
+  }
+}
+
 async function tick() {
   try {
     const planes = await getVisible();
@@ -233,6 +253,7 @@ async function tick() {
     elStatus.textContent = 'api error';
     elStatus.classList.add('err');
   }
+  checkVersion();
 }
 
 tick();
