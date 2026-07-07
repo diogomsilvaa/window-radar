@@ -35,8 +35,8 @@ const RADIUS_NM = CFG.radiusNm;
 const ALT_CEILING_M = 3000;
 const FT_PER_M = 3.28084;
 
-// Using api.allorigins.win because of CORS
-const ADSB_POINT = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://api.adsb.lol/v2/lat/${CENTER.lat}/lon/${CENTER.lon}/dist/${RADIUS_NM}?t=${Date.now()}`)}`;
+// Using thingproxy.freeboard.io because of CORS
+const ADSB_POINT = `https://thingproxy.freeboard.io/fetch/https://api.adsb.lol/v2/lat/${CENTER.lat}/lon/${CENTER.lon}/dist/${RADIUS_NM}`;
 const ADSBDB = 'https://api.adsbdb.com/v0/callsign';
 const ROUTE_TTL = 60 * 60 * 1000;
 const routeCache = new Map();
