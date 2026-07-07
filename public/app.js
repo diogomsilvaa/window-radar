@@ -36,7 +36,7 @@ const ALT_CEILING_M = 3000;
 const FT_PER_M = 3.28084;
 
 // ALTERADO: URL atualizada para o formato da API do adsb.lol
-const ADSB_POINT = `https://api.adsb.lol/v2/lat/${CENTER.lat}/lon/${CENTER.lon}/dist/${RADIUS_NM}`;
+const ADSB_POINT = `https://cors-anywhere.herokuapp.com/https://api.adsb.lol/v2/lat/${CENTER.lat}/lon/${CENTER.lon}/dist/${RADIUS_NM}`;
 const ADSBDB = 'https://api.adsbdb.com/v0/callsign';
 const ROUTE_TTL = 60 * 60 * 1000;
 const routeCache = new Map();
