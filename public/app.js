@@ -35,7 +35,8 @@ const RADIUS_NM = CFG.radiusNm;
 const ALT_CEILING_M = 3000;
 const FT_PER_M = 3.28084;
 
-const ADSB_POINT = `https://api.airplanes.live/v2/point/${CENTER.lat}/${CENTER.lon}/${RADIUS_NM}`;
+// ALTERADO: URL atualizada para o formato da API do adsb.lol
+const ADSB_POINT = `https://api.adsb.lol/v2/lat/${CENTER.lat}/lon/${CENTER.lon}/dist/${RADIUS_NM}`;
 const ADSBDB = 'https://api.adsbdb.com/v0/callsign';
 const ROUTE_TTL = 60 * 60 * 1000;
 const routeCache = new Map();
