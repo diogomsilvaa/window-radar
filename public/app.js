@@ -1,4 +1,4 @@
-const REFRESH_MS = 5000;
+const REFRESH_MS = 10000;
 const elStage = document.getElementById('stage');
 const elStatus = document.getElementById('status');
 
